@@ -10,12 +10,12 @@ def page_index():
     return get_all()
 
 
-@app.route('/users/<int:uid>')
+@app.route('/candidate/<int:uid>')
 def page_users(uid):
     return get_by_pk(uid)
 
 
-@app.route('/skill/<skill>')
+@app.route('/skills/<skill>')
 def page_skills(skill):
     return get_by_skill(skill)
 
