@@ -1,67 +1,32 @@
 import json
 
 
-def load_candidates():  # которая загрузит данные из файла
-    """
-    Загружает из файла список кандидатов
-    Возвращает list[dict]
-    """
-    with open('candidates.json', encoding='utf-8') as file:
+def load_candidates_from_json():
+    with open('candidates.json', 'r', encoding='utf-8') as file:
         candidates = json.load(file)
         return candidates
 
 
-def get_all() -> str:  # которая покажет всех кандидатов
-    """
-    :return: форматированный список всех кандидатов str
-    """
-    candidates = load_candidates()
-    result = '<pre>'
-    for cand in candidates:
-        result += f"Имя кандидата: {cand['name']}\nПозиция: {cand['position']}\nНавыки: {cand['skills']}\n\n"
-    result += '</pre>'
-    return result
+def get_candidate(candidate_id):
+    candidates = load_candidates_from_json()
+    for candidate in candidates:
+        if candidate['pk'] == candidate_id:
+            return candidate
 
 
-def get_by_pk(pk: int) -> str:  # которая вернет кандидата по pk
-    """
-    :param pk: id candidate
-    :return: форматированную колонку кандидата по id
-    """
-    candidates = load_candidates()
-    result: str = '<pre>'
-    for cand in candidates:
-        if cand['pk'] == pk:
-            url = cand['picture']
-            result += f"<img src='{url}'>\nИмя кандидата: {cand['name']}\nПозиция: {cand['position']}\nНавыки: {cand['skills']}\n\n"
-    result += '</pre>'
-    return result
+def get_candidates_by_name(candidate_name):
+    find_list_name = []
+    candidates = load_candidates_from_json()
+    for candidate in candidates:
+        if candidate_name.lower() in candidate['name'].lower():
+            find_list_name.append(candidate)
+    return find_list_name
 
 
-def get_by_skill(skill_name: str, list_candidates: list):
-    list_candidates_by_skill = []
-    for i in list_candidates:
-        if skill_name in i['skills'].lower():
-            list_candidates_by_skill.append(i)
-    return list_candidates_by_skill
-
-
-def get_by_skill(skill_name: str) -> str:  # которая вернет кандидатов по навыку
-    """
-    :param skill_name: строка со скилом
-    :return: форматированную строку всех подходящих кандидатов
-    """
-    candidates = load_candidates()
-    result = '<pre>'
-    for cand in candidates:
-        skill_name = skill_name.lower()
-        skill_str = cand["skills"]
-        skill_str = skill_str.lower()
-        if skill_name in skill_str:
-            url = cand['picture']
-            result += f"<img src='{url}'>\nИмя кандидата: {cand['name']}\nПозиция: {cand['position']}\nНавыки: {cand['skills']}\n\n"
-    result += '</pre>'
-    return result
-
-#
-# `get_by_skill(skill_name)`, которая вернет кандидатов по навыку
+def get_candidates_by_skill(skill_name):
+    find_list_skill = []
+    candidates = load_candidates_from_json()
+    for candidate in candidates:
+        if skill_name.lower() in candidate['skills'].lower():
+            find_list_skill.append(candidate)
+    return find_list_skill
